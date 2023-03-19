@@ -1,12 +1,10 @@
-const {
-    removeContact
-} = require("../models/contacts")
+const service = require("../../service/index")
 
-exports.deleteContact = async (req, res) => {
+ const deletedContact = async (req, res) => {
    const { contactId } = req.params;
   try {
-    const contacts = await removeContact(contactId)
-    contacts.filter(contact => contact.id !== contactId) ?  
+    const contacts = await service.removeContact(contactId)
+    contacts ?  
       res.json({
         message: "contact deleted"
       })
@@ -22,4 +20,7 @@ exports.deleteContact = async (req, res) => {
       message: "Internal Server Error"
     })
   } 
+}
+module.exports = {
+  deletedContact
 }

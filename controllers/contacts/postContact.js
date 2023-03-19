@@ -1,10 +1,7 @@
-const {
-    addContact
-} = require("../models/contacts");
-const { v4: uuidv4 } = require('uuid');
-const { contactValidate } = require('../utils/contactValidator')
+const service = require("../../service/index")
+const { contactValidate } = require("../../utils/contactValidator")
 
-exports.addContact = async (req, res) => {
+ const createdContact = async (req, res) => {
   const { error, value } = contactValidate(req.body);
 
   if (error) {
@@ -15,11 +12,9 @@ exports.addContact = async (req, res) => {
     });
   }
 
-  value.id = uuidv4();
   try {
-    const newContact = await addContact(value);
-    
-    
+    const newContact = await service.createContact(value);
+    value.favorite = false
     res.json({
       code: 201,
       data: {
@@ -33,4 +28,8 @@ exports.addContact = async (req, res) => {
       message: "Internal Server Error"
     });
   }  
+}
+
+module.exports = {
+  createdContact
 }

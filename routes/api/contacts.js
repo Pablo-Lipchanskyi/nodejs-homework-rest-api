@@ -1,36 +1,18 @@
 const express = require('express')
 const router = express.Router()
-const {
-  getContacts,
-  getContactById
-} = require("../../controllers/getConroller.js");
-const {
-  addContact
-} = require("../../controllers/postController.js")
-const {
-  deleteContact
-} = require("../../controllers/deleteController.js")
-const {
-  putContact
-} = require("../../controllers/putController.js")
+const controller = require("../../controllers/contacts/index")
 
 
-router.get('/', async (req, res) => { getContacts(req, res) })
+router.get('/', controller.getContacts)
 
-router.get('/:contactId', async (req, res) => {
-  getContactById(req,res)
-})
+router.get('/:contactId', controller.getContactsById)
 
-router.post('/', async (req, res) => {
-  addContact(req,res)
-});
+router.post('/', controller.createdContact);
 
-router.delete('/:contactId', async (req, res) => {
-  deleteContact(req,res)
-})
+router.delete('/:contactId', controller.deletedContact)
 
-router.put('/:contactId', async (req, res) => {
-  putContact(req,res)
-})
+router.put('/:contactId', controller.updateContactById)
+
+router.patch('/:contactId/favorite', controller.updatedStatusContact)
 
 module.exports = router
