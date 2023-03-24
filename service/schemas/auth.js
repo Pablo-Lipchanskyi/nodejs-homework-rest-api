@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const { hash } = require('bcrypt');
+
 const auth = new Schema(
     {
   password: {
@@ -23,6 +25,12 @@ const auth = new Schema(
   },
 }
 )
+
+auth.pre('save', async function () {
+  if (this.isNew) {
+    this.password = await hash(this.password, 10);
+  }
+});
 
 const User = mongoose.model('auth', auth)
 module.exports = User
