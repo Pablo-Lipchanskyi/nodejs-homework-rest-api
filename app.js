@@ -1,26 +1,25 @@
-const express = require('express')
-const logger = require('morgan')
-const cors = require('cors')
-const contactsRouter = require('./routes/api/contacts')
-const usersRouter = require('./routes/api/user')
+const express = require("express");
+const logger = require("morgan");
+const cors = require("cors");
+require("dotenv").config();
+require("colors");
 
-const app = express()
+const { contactsRouter } = require("./routes/contacts.routes");
+const { authRouter } = require("./routes/auth.routes");
 
-const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
+const app = express();
 
-app.use(logger(formatsLogger))
-app.use(cors())
-app.use(express.json())
+const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
-app.use('/api/contacts', contactsRouter)
-app.use('/users/register', usersRouter)
+app.use(logger(formatsLogger));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.use((req, res) => {
-  res.status(404).json({ message: 'Not found' })
-})
+app.use("/api/users", authRouter);
+app.use("/api/contacts", contactsRouter);
 
-app.use((err, req, res, next) => {
-  res.status(500).json({ message: err.message })
-})
+app.all("*", require("./middlewares/badUrlError"));
+app.use(require("./middlewares/errorHandler"));
 
-module.exports = app
+module.exports = app;
