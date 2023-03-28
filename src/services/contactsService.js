@@ -56,13 +56,23 @@ const removeContact = async (contactId, owner) => {
   return removedContact;
 };
 
-const updateContact = async (id, { name, email, phone, favorite }) => {
-  const updatedContact = await Contact.findByIdAndUpdate(
-    id,
-    { $set: { name, email, phone, favorite } },
+const updateContact = async (contactId, updatedContact, owner) => {
+  const { name, email, phone } = updatedContact;
+
+  if (!name && !email && !phone) {
+    throw new AppError(400, "Error. Missing fields.");
+  }
+
+  const contact = await Contacts.findOneAndUpdate(
+    { _id: contactId, owner },
+    { $set: updatedContact },
     { new: true }
   );
-  return updatedContact;
+  if (!contact) {
+    throw new AppError(404, `Contact with id=${contactId} not found`);
+  }
+
+  return contact;
 };
 
 const toggleFavorite = async (contactId, favorite, owner) => {
