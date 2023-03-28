@@ -10,7 +10,7 @@ const updateAvatarController = asyncHandler(async (req, res) => {
   const { file, user } = req;
 
   const newFilename = await uploadAvatar(file, user);
-  const avatarURL = `http://localhost:8080/api/avatars/${newFilename}`;
+  const avatarURL = `http://localhost:3000/api/avatars/${newFilename}`;
   updatedProfile(user._id, avatarURL);
 
   res.status(200).json({ message: "Success.", avatarURL });
