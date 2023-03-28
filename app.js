@@ -4,8 +4,8 @@ const cors = require("cors");
 require("dotenv").config();
 require("colors");
 
-const { contactsRouter } = require("./routes/contacts.routes");
-const { authRouter } = require("./routes/auth.routes");
+const { contactsRouter } = require("./src/routes/contacts.routes");
+const { authRouter } = require("./src/routes/auth.routes");
 
 const app = express();
 
