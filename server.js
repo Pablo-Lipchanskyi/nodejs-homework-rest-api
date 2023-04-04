@@ -1,10 +1,10 @@
 const app = require('./app');
-const { connectDB } = require('./config/connection');
+const { connectDB } = require('./src/config/connection');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8081;
 
 (async () => {
-  await connectDB;
+  await connectDB();
 })();
 
 app.listen(PORT, () => {
